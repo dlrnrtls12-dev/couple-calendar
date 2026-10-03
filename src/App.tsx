@@ -13,6 +13,7 @@ import { ProfileModal } from './components/ProfileModal';
 import { ShareModal } from './components/ShareModal';
 import { BottomNav } from './components/BottomNav';
 import { MobileFAB } from './components/MobileFAB';
+import { AmbientBackground } from './components/AmbientBackground';
 import { Heart, Loader2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -240,7 +241,10 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#faf7f5] text-[#2e2929] flex flex-col selection:bg-rose-200">
+    <div className="min-h-screen bg-[#fff9f9] text-[#2e2929] flex flex-col selection:bg-rose-200 relative overflow-x-hidden">
+      {/* Dreamy Ambient Glowing Background */}
+      <AmbientBackground />
+
       {/* Top Navigation & Profile Bar */}
       <Header
         profile={data.profile}

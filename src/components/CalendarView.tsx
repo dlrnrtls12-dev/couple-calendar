@@ -106,29 +106,29 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Calendar Header with Controls */}
-      <div className="bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="glass-panel rounded-3xl p-5 shadow-sm border border-white/80 flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Month selector */}
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-bold text-stone-800 tracking-tight">
+          <h2 className="text-2xl font-black text-stone-800 tracking-tight shimmer-text">
             {format(currentMonth, 'yyyy년 M월', { locale: ko })}
           </h2>
-          <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl">
+          <div className="flex items-center gap-1 bg-white/80 backdrop-blur-md p-1 rounded-2xl border border-rose-100 shadow-2xs">
             <button
               onClick={prevMonth}
-              className="p-1.5 hover:bg-white text-stone-600 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 hover:bg-rose-50 text-stone-600 rounded-xl transition-colors cursor-pointer"
               title="이전 달"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={goToToday}
-              className="px-2.5 py-1 text-xs font-semibold text-stone-700 hover:bg-white rounded-lg transition-colors cursor-pointer"
+              className="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
             >
               오늘
             </button>
             <button
               onClick={nextMonth}
-              className="p-1.5 hover:bg-white text-stone-600 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 hover:bg-rose-50 text-stone-600 rounded-xl transition-colors cursor-pointer"
               title="다음 달"
             >
               <ChevronRight className="w-4 h-4" />
@@ -138,35 +138,35 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
         {/* Filter & Add Event Button */}
         <div className="flex items-center flex-wrap gap-2 w-full md:w-auto justify-end">
-          <div className="flex items-center bg-stone-100 p-1 rounded-2xl text-xs gap-1">
+          <div className="flex items-center bg-white/80 backdrop-blur-md p-1 rounded-2xl text-xs gap-1 border border-stone-200/80 shadow-2xs">
             <button
               onClick={() => setSelectedFilter('all')}
-              className={`px-2.5 py-1.5 rounded-xl font-medium transition-all cursor-pointer ${
-                selectedFilter === 'all' ? 'bg-white text-stone-900 shadow-2xs font-semibold' : 'text-stone-500 hover:text-stone-800'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                selectedFilter === 'all' ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-2xs' : 'text-stone-500 hover:text-stone-800'
               }`}
             >
               전체
             </button>
             <button
               onClick={() => setSelectedFilter('couple')}
-              className={`px-2.5 py-1.5 rounded-xl font-medium transition-all cursor-pointer ${
-                selectedFilter === 'couple' ? 'bg-purple-500 text-white font-semibold' : 'text-stone-500 hover:text-purple-600'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                selectedFilter === 'couple' ? 'bg-purple-500 text-white shadow-2xs' : 'text-stone-500 hover:text-purple-600'
               }`}
             >
               💜 함께
             </button>
             <button
               onClick={() => setSelectedFilter('husband')}
-              className={`px-2.5 py-1.5 rounded-xl font-medium transition-all cursor-pointer ${
-                selectedFilter === 'husband' ? 'bg-blue-500 text-white font-semibold' : 'text-stone-500 hover:text-blue-600'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                selectedFilter === 'husband' ? 'bg-blue-500 text-white shadow-2xs' : 'text-stone-500 hover:text-blue-600'
               }`}
             >
               💙 남편
             </button>
             <button
               onClick={() => setSelectedFilter('wife')}
-              className={`px-2.5 py-1.5 rounded-xl font-medium transition-all cursor-pointer ${
-                selectedFilter === 'wife' ? 'bg-pink-500 text-white font-semibold' : 'text-stone-500 hover:text-pink-600'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                selectedFilter === 'wife' ? 'bg-pink-500 text-white shadow-2xs' : 'text-stone-500 hover:text-pink-600'
               }`}
             >
               💖 아내
@@ -175,10 +175,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
           <button
             onClick={() => onAddEvent(selectedDateStr)}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white text-xs font-semibold px-3.5 py-2 rounded-2xl shadow-sm shadow-rose-200 transition-all cursor-pointer active:scale-95"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-md shadow-rose-500/25 transition-all cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
-            <span>일정 추가</span>
+            <span>일정 & 기념일</span>
           </button>
         </div>
       </div>
@@ -186,7 +186,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       {/* Main Grid: Calendar Grid & Daily Schedule Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Calendar Grid (8 cols on lg) */}
-        <div className="lg:col-span-8 bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80">
+        <div className="lg:col-span-8 glass-panel rounded-3xl p-4 sm:p-5 shadow-sm border border-white/80">
           {/* Day of week headers */}
           <div className="grid grid-cols-7 mb-2 text-center text-xs font-bold">
             <span className="text-rose-500 py-1">일</span>
@@ -310,7 +310,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         </div>
 
         {/* Selected Date Detail Panel (4 cols on lg) */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80 flex flex-col h-full">
+        <div className="lg:col-span-4 glass-panel rounded-3xl p-5 shadow-sm border border-white/80 flex flex-col h-full">
           {/* Selected Date Header */}
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">
             <div>

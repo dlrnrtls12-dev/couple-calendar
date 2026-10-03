@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-rose-100/80 sticky top-0 z-40 shadow-xs">
+    <header className="glass-panel sticky top-0 z-40 border-b border-white/70 shadow-sm transition-all">
       <div className="max-w-6xl mx-auto px-4 py-3">
         {/* Top Bar: Title & Couple Profile & Actions */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -49,28 +49,29 @@ export const Header: React.FC<HeaderProps> = ({
             <button 
               onClick={triggerHeartConfetti} 
               title="사랑의 하트 날리기 클릭!"
-              className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-400 via-pink-400 to-rose-300 flex items-center justify-center text-white shadow-md shadow-rose-200 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+              className="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-400 flex items-center justify-center text-white shadow-lg shadow-rose-500/30 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
             >
+              <div className="absolute inset-0 rounded-2xl bg-rose-400 animate-ping opacity-25 pointer-events-none" />
               <Heart className="w-6 h-6 fill-white group-hover:scale-110 transition-transform" />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-xl font-black tracking-tight shimmer-text">
                   우리사이
                 </h1>
-                <span className="text-xs bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-semibold border border-rose-200">
-                  부부 공간
+                <span className="text-[10px] bg-gradient-to-r from-rose-500 to-pink-500 text-white px-2 py-0.5 rounded-full font-bold shadow-2xs">
+                  둘만의 공간 💍
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs">
                 {profile.weddingDate && (
-                  <span className="font-semibold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100 text-[11px]">
-                    결혼 D+{weddingDays}일 💍
+                  <span className="font-bold text-rose-600 bg-rose-100/70 px-2 py-0.5 rounded-lg border border-rose-200/80 text-[11px] shadow-2xs">
+                    결혼 D+{weddingDays}일
                   </span>
                 )}
                 {profile.firstMetDate && (
-                  <span className="font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100 text-[11px]">
-                    만난 지 D+{metDays}일 🌸
+                  <span className="font-bold text-amber-700 bg-amber-100/70 px-2 py-0.5 rounded-lg border border-amber-200/80 text-[11px] shadow-2xs">
+                    만난 지 D+{metDays}일
                   </span>
                 )}
               </div>
@@ -78,14 +79,14 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Couple Nicknames & Mood Bar */}
-          <div className="flex items-center justify-center bg-stone-50 border border-stone-200/70 px-2.5 py-1.5 rounded-2xl gap-2 sm:gap-3 shadow-2xs w-full sm:w-auto">
+          <div className="flex items-center justify-center bg-white/80 backdrop-blur-md border border-rose-100/90 px-3 py-1.5 rounded-2xl gap-2 sm:gap-3 shadow-xs w-full sm:w-auto">
             {/* Husband */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-lg sm:text-xl bg-blue-100/60 p-1 rounded-xl">{profile.partner1.avatar || '👨'}</span>
+              <span className="text-lg sm:text-xl bg-blue-100/80 p-1 rounded-xl shadow-2xs">{profile.partner1.avatar || '👨'}</span>
               <div className="text-left">
-                <div className="text-[11px] sm:text-xs font-semibold text-stone-700 flex items-center gap-1">
+                <div className="text-[11px] sm:text-xs font-bold text-stone-800 flex items-center gap-1">
                   <span>{profile.partner1.nickname || profile.partner1.name}</span>
-                  <span className="text-[9px] sm:text-[10px] bg-blue-50 text-blue-600 px-1 rounded border border-blue-200">남편</span>
+                  <span className="text-[9px] sm:text-[10px] bg-blue-500 text-white font-bold px-1.5 py-0.2 rounded-md">남편</span>
                 </div>
                 <div className="text-[10px] sm:text-[11px] text-stone-500 truncate max-w-[85px] sm:max-w-[120px]">
                   {profile.partner1.mood}
@@ -93,15 +94,15 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
 
-            <div className="text-rose-400 text-xs font-serif italic px-1">♥</div>
+            <div className="text-rose-500 text-sm font-serif italic px-1 animate-pulse">♥</div>
 
             {/* Wife */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-lg sm:text-xl bg-pink-100/60 p-1 rounded-xl">{profile.partner2.avatar || '👩'}</span>
+              <span className="text-lg sm:text-xl bg-pink-100/80 p-1 rounded-xl shadow-2xs">{profile.partner2.avatar || '👩'}</span>
               <div className="text-left">
-                <div className="text-[11px] sm:text-xs font-semibold text-stone-700 flex items-center gap-1">
+                <div className="text-[11px] sm:text-xs font-bold text-stone-800 flex items-center gap-1">
                   <span>{profile.partner2.nickname || profile.partner2.name}</span>
-                  <span className="text-[9px] sm:text-[10px] bg-pink-50 text-pink-600 px-1 rounded border border-pink-200">아내</span>
+                  <span className="text-[9px] sm:text-[10px] bg-pink-500 text-white font-bold px-1.5 py-0.2 rounded-md">아내</span>
                 </div>
                 <div className="text-[10px] sm:text-[11px] text-stone-500 truncate max-w-[85px] sm:max-w-[120px]">
                   {profile.partner2.mood}
@@ -114,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-2 justify-end w-full sm:w-auto">
             <button
               onClick={onOpenShare}
-              className="flex-1 sm:flex-none justify-center flex items-center gap-1.5 text-xs font-medium bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-3 py-2 rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer"
+              className="flex-1 sm:flex-none justify-center flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:to-indigo-700 text-white px-3.5 py-2.5 rounded-2xl shadow-md shadow-purple-500/20 transition-all active:scale-95 cursor-pointer"
               title="스마트폰 연결 및 공유 링크"
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -122,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               onClick={onOpenProfile}
-              className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-xl transition-colors cursor-pointer border border-stone-200/80"
+              className="p-2.5 text-stone-600 hover:text-stone-900 bg-white/80 hover:bg-white rounded-2xl transition-all cursor-pointer border border-stone-200/80 shadow-2xs"
               title="우리 프로필 & 기념일 설정"
             >
               <Settings className="w-4 h-4" />
@@ -132,8 +133,8 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Couple Greeting Message */}
         {profile.coupleMessage && (
-          <div className="mt-2 text-center text-xs text-rose-500/90 font-medium flex items-center justify-center gap-1.5 bg-rose-50/50 py-1 px-3 rounded-lg border border-rose-100/60">
-            <Sparkles className="w-3 h-3 text-rose-400" />
+          <div className="mt-2 text-center text-xs text-rose-700 font-semibold flex items-center justify-center gap-1.5 bg-rose-50/70 py-1.5 px-4 rounded-xl border border-rose-200/60 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-spin" />
             <span>"{profile.coupleMessage}"</span>
           </div>
         )}

@@ -64,13 +64,13 @@ export const TodoView: React.FC<TodoViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Category Tabs */}
-      <div className="bg-white rounded-3xl p-4 shadow-sm border border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="glass-panel rounded-3xl p-4 shadow-sm border border-white/80 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
           <button
             onClick={() => setActiveTab('all')}
             className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'all'
-                ? 'bg-rose-500 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-xs'
                 : 'text-stone-600 hover:bg-stone-100'
             }`}
           >
@@ -111,13 +111,13 @@ export const TodoView: React.FC<TodoViewProps> = ({
           </button>
         </div>
 
-        <div className="text-xs text-stone-500 font-medium">
+        <div className="text-xs text-stone-500 font-semibold bg-white/70 px-3 py-1.5 rounded-xl border border-rose-100">
           완료 {completedCount} / {filteredTodos.length}개
         </div>
       </div>
 
       {/* Add New Item Form */}
-      <div className="bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80">
+      <div className="glass-panel rounded-3xl p-5 shadow-sm border border-white/80">
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input
@@ -206,7 +206,7 @@ export const TodoView: React.FC<TodoViewProps> = ({
       </div>
 
       {/* Todo List */}
-      <div className="bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80">
+      <div className="glass-panel rounded-3xl p-5 shadow-sm border border-white/80">
         <div className="space-y-2">
           {filteredTodos.map((todo) => {
             const catInfo = getCategoryInfo(todo.category);

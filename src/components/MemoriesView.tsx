@@ -54,14 +54,14 @@ export const MemoriesView: React.FC<MemoriesViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-emerald-100 via-teal-100 to-cyan-100 rounded-3xl p-6 border border-emerald-200/70 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="glass-panel-glow rounded-3xl p-6 border border-emerald-200/80 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-white text-emerald-600 rounded-2xl shadow-sm">
-            <Camera className="w-6 h-6" />
+          <div className="p-3 bg-gradient-to-tr from-emerald-500 to-teal-500 text-white rounded-2xl shadow-md shadow-emerald-500/25">
+            <Camera className="w-6 h-6 animate-pulse" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-stone-800">우리의 소중한 순간들</h2>
-            <p className="text-xs text-stone-600 mt-0.5">
+            <h2 className="text-xl font-black text-stone-900 shimmer-text">우리의 소중한 순간들</h2>
+            <p className="text-xs text-stone-600 mt-0.5 font-medium">
               함께 떠난 여행, 특별한 데이트, 잊지 못할 순간들을 사진과 함께 기록하세요.
             </p>
           </div>
@@ -69,7 +69,7 @@ export const MemoriesView: React.FC<MemoriesViewProps> = ({
 
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-xs transition-all cursor-pointer whitespace-nowrap"
+          className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer whitespace-nowrap active:scale-95"
         >
           <Plus className="w-4 h-4" />
           <span>{showAddForm ? '작성 닫기' : '새 순간 기록하기'}</span>
@@ -78,7 +78,7 @@ export const MemoriesView: React.FC<MemoriesViewProps> = ({
 
       {/* Add Form */}
       {showAddForm && (
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 animate-in fade-in slide-in-from-top-3">
+        <div className="glass-panel rounded-3xl p-6 shadow-sm border border-white/80 animate-in fade-in slide-in-from-top-3">
           <h3 className="text-sm font-bold text-stone-800 mb-4 flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-emerald-500" />
             <span>새로운 추억 한 페이지 기록</span>
@@ -188,7 +188,7 @@ export const MemoriesView: React.FC<MemoriesViewProps> = ({
           return (
             <div
               key={mem.id}
-              className="bg-white rounded-3xl overflow-hidden border border-stone-200/80 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
+              className="glass-panel rounded-3xl overflow-hidden border border-white/80 shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1.5"
             >
               {mem.imageUrl && (
                 <div className="relative h-56 w-full overflow-hidden bg-stone-100">

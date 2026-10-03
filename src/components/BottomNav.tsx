@@ -16,7 +16,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-lg border-t border-rose-100/90 pb-[max(env(safe-area-inset-bottom),8px)] pt-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-t border-rose-200/60 pb-[max(env(safe-area-inset-bottom),10px)] pt-2 shadow-[0_-8px_32px_rgba(244,63,94,0.12)]">
       <div className="flex items-center justify-around px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -25,20 +25,25 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
-                isActive ? 'text-rose-500 scale-105' : 'text-stone-400 hover:text-stone-600'
+              className={`relative flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+                isActive ? 'text-rose-600 scale-105' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
               <div
-                className={`p-1 rounded-xl transition-colors ${
-                  isActive ? 'bg-rose-50' : 'bg-transparent'
+                className={`p-1.5 rounded-2xl transition-all duration-300 ${
+                  isActive
+                    ? 'bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md shadow-rose-500/30'
+                    : 'bg-transparent text-stone-400'
                 }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
               </div>
-              <span className={`text-[10px] mt-0.5 ${isActive ? 'font-bold' : 'font-medium'}`}>
+              <span className={`text-[10px] mt-1 tracking-tight ${isActive ? 'font-black text-rose-600' : 'font-semibold'}`}>
                 {item.label}
               </span>
+              {isActive && (
+                <div className="w-1 h-1 rounded-full bg-rose-500 mt-0.5 animate-ping" />
+              )}
             </button>
           );
         })}

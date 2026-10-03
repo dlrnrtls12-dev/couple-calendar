@@ -47,22 +47,22 @@ export const LoveNotesView: React.FC<LoveNotesViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-rose-100 via-pink-100 to-amber-100 rounded-3xl p-6 border border-pink-200/70 shadow-xs">
+      <div className="glass-panel-glow rounded-3xl p-6 border border-rose-200/80 shadow-md">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-white text-rose-500 rounded-2xl shadow-sm">
-            <MessageSquareHeart className="w-6 h-6" />
+          <div className="p-3 bg-gradient-to-tr from-rose-500 to-pink-500 text-white rounded-2xl shadow-md shadow-rose-500/25">
+            <MessageSquareHeart className="w-6 h-6 animate-pulse" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-stone-800">서로에게 남기는 러브 노트</h2>
-            <p className="text-xs text-stone-600 mt-0.5">
-              퇴근길 응원, 소소한 감사, 사랑의 한마디를 둘만의 핀보드에 남겨보세요.
+            <h2 className="text-xl font-black text-stone-900 shimmer-text">서로에게 남기는 러브 노트</h2>
+            <p className="text-xs text-stone-600 mt-0.5 font-medium">
+              퇴근길 응원, 소소한 감사, 사랑의 한마디를 둘만의 특별한 핀보드에 남겨보세요.
             </p>
           </div>
         </div>
       </div>
 
       {/* New Note Form */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80">
+      <div className="glass-panel rounded-3xl p-6 shadow-sm border border-white/80">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             {/* Sender Selection */}
