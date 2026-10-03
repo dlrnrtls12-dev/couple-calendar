@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/couple-calendar/',
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0', // Allow access from smartphone on local network
