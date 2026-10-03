@@ -8,7 +8,7 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab }) => {
   const navItems = [
-    { id: 'calendar', label: '캘린더', icon: Calendar },
+    { id: 'calendar', label: '달력', icon: Calendar },
     { id: 'anniversary', label: '기념일', icon: Heart },
     { id: 'notes', label: '러브노트', icon: MessageSquareHeart },
     { id: 'todos', label: '할일', icon: CheckSquare },
@@ -16,8 +16,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-t border-rose-200/60 pb-[max(env(safe-area-inset-bottom),10px)] pt-2 shadow-[0_-8px_32px_rgba(244,63,94,0.12)]">
-      <div className="flex items-center justify-around px-2">
+    <div className="md:hidden fixed bottom-2.5 left-2.5 right-2.5 z-40 bg-white/92 backdrop-blur-2xl border border-rose-200/90 rounded-[28px] py-1.5 px-2 shadow-[0_12px_45px_rgba(244,63,94,0.22)] ring-1 ring-white/90">
+      <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -25,24 +25,24 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`relative flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+              className={`relative flex flex-col items-center justify-center py-1 px-2.5 rounded-2xl transition-all duration-300 cursor-pointer ${
                 isActive ? 'text-rose-600 scale-105' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
               <div
                 className={`p-1.5 rounded-2xl transition-all duration-300 ${
                   isActive
-                    ? 'bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md shadow-rose-500/30'
+                    ? 'bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md shadow-rose-500/35 scale-110'
                     : 'bg-transparent text-stone-400'
                 }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
               </div>
-              <span className={`text-[10px] mt-1 tracking-tight ${isActive ? 'font-black text-rose-600' : 'font-semibold'}`}>
+              <span className={`text-[10px] mt-0.5 tracking-tight ${isActive ? 'font-black text-rose-600 drop-shadow-2xs' : 'font-bold'}`}>
                 {item.label}
               </span>
               {isActive && (
-                <div className="w-1 h-1 rounded-full bg-rose-500 mt-0.5 animate-ping" />
+                <div className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-0.5 shadow-xs" />
               )}
             </button>
           );

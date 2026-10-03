@@ -2,8 +2,15 @@
 
 @layer base {
   body {
-    background-color: #fff9f9;
-    color: #2e2929;
+    background-color: #fff6f8;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(254, 205, 211, 0.45) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(254, 240, 138, 0.35) 0px, transparent 45%),
+      radial-gradient(at 50% 50%, rgba(253, 230, 138, 0.2) 0px, transparent 60%),
+      radial-gradient(at 100% 100%, rgba(244, 114, 182, 0.35) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(233, 213, 255, 0.4) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #2b2424;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Pretendard", "Noto Sans KR", sans-serif;
     margin: 0;
     padding: 0;
@@ -15,33 +22,33 @@
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(244, 63, 94, 0.2);
+  background: linear-gradient(to bottom, rgba(244, 63, 94, 0.3), rgba(236, 72, 153, 0.3));
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(244, 63, 94, 0.4);
+  background: linear-gradient(to bottom, rgba(244, 63, 94, 0.6), rgba(236, 72, 153, 0.6));
 }
 
 /* Animations */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(2deg); }
+  50% { transform: translateY(-10px) rotate(2.5deg); }
 }
 
 @keyframes float-reverse {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(8px) rotate(-2deg); }
+  50% { transform: translateY(10px) rotate(-2.5deg); }
 }
 
 @keyframes pulse-slow {
-  0%, 100% { transform: scale(1); opacity: 0.85; }
+  0%, 100% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(1.06); opacity: 1; }
 }
 
@@ -50,10 +57,27 @@
   100% { background-position: 200% 0; }
 }
 
-@keyframes aurora {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes shine-sweep {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+}
+
+@keyframes ring-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.25); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(1); }
 }
 
 .animate-float {
@@ -68,39 +92,83 @@
   animation: pulse-slow 3s infinite ease-in-out;
 }
 
-.animate-aurora {
-  background-size: 200% 200%;
-  animation: aurora 8s ease infinite;
+.animate-heart-beat {
+  animation: heart-beat 2.2s infinite ease-in-out;
+}
+
+.animate-sparkle {
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+.animate-ring-spin {
+  animation: ring-spin 8s linear infinite;
 }
 
 /* Glassmorphism Classes */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 30px -5px rgba(244, 63, 94, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 10px 30px -5px rgba(244, 63, 94, 0.08), 
+    0 20px 40px -15px rgba(251, 113, 133, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-panel-glow {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(254, 205, 211, 0.8);
-  box-shadow: 0 12px 35px -5px rgba(244, 63, 94, 0.14), 0 0 15px rgba(251, 113, 133, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(254, 205, 211, 0.9);
+  box-shadow: 
+    0 16px 40px -10px rgba(244, 63, 94, 0.16), 
+    0 0 25px rgba(251, 113, 133, 0.16),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.04),
+    0 6px 16px -6px rgba(244, 63, 94, 0.06);
+}
+
+.luxury-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 245, 248, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(254, 226, 226, 0.8);
+  box-shadow: 
+    0 14px 34px -10px rgba(244, 63, 94, 0.12),
+    0 2px 10px -2px rgba(244, 63, 94, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    0 20px 45px -10px rgba(244, 63, 94, 0.2),
+    0 4px 16px -2px rgba(244, 63, 94, 0.08),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
 }
 
 /* Gradient Text Shimmer */
 .shimmer-text {
-  background: linear-gradient(90deg, #e11d48 0%, #f43f5e 25%, #fb7185 50%, #f43f5e 75%, #e11d48 100%);
+  background: linear-gradient(90deg, #e11d48 0%, #ff4b72 25%, #fb7185 50%, #ff4b72 75%, #e11d48 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 3.5s linear infinite;
+}
+
+.shimmer-gold {
+  background: linear-gradient(90deg, #b45309 0%, #f59e0b 25%, #fde68a 50%, #f59e0b 75%, #b45309 100%);
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
@@ -110,4 +178,16 @@
 
 .gold-gradient {
   background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%);
+}
+
+.rose-gold-gradient {
+  background: linear-gradient(135deg, #f43f5e 0%, #fb7185 50%, #f9a8d4 100%);
+}
+
+.royal-purple-gradient {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+}
+
+.romantic-rainbow-ring {
+  background: conic-gradient(from 0deg, #f43f5e, #ec4899, #8b5cf6, #3b82f6, #06b6d4, #10b981, #f59e0b, #f43f5e);
 }
