@@ -16,7 +16,7 @@ const DATA_FILE = path.join(process.cwd(), 'couple-data.json');
 const initialData = {
   profile: {
     partner1: {
-      name: '남편',
+      name: '국신',
       nickname: '서방님',
       avatar: '👨',
       mood: '설렘 💕',
@@ -57,12 +57,12 @@ const initialData = {
     },
     {
       id: 'ann-3',
-      title: '남편 생일 🎂',
-      date: '1993-08-15',
+      title: '국신 생일 🎂',
+      date: '1990-01-04',
       isRepeatYearly: true,
       category: 'birthday',
-      memo: '세상에서 제일 사랑하는 내 반쪽 태어난 날',
-      icon: '🎉'
+      memo: '양력 1월 4일 소중한 국신의 생일! 매년 사랑하고 축하해 🎉',
+      icon: '🎂'
     },
     {
       id: 'ann-4',

@@ -5,7 +5,7 @@ const STORAGE_KEY = 'couple_calendar_app_data';
 const defaultData: AppData = {
   profile: {
     partner1: {
-      name: '남편',
+      name: '국신',
       nickname: '서방님',
       avatar: '👨',
       mood: '설렘 💕',
@@ -46,12 +46,12 @@ const defaultData: AppData = {
     },
     {
       id: 'ann-3',
-      title: '남편 생일 🎂',
-      date: '1993-08-15',
+      title: '국신 생일 🎂',
+      date: '1990-01-04',
       isRepeatYearly: true,
       category: 'birthday',
-      memo: '세상에서 제일 사랑하는 내 반쪽 태어난 날',
-      icon: '🎉'
+      memo: '양력 1월 4일 소중한 국신의 생일! 매년 사랑하고 축하해 🎉',
+      icon: '🎂'
     },
     {
       id: 'ann-4',
@@ -145,6 +145,19 @@ function getLocalData(): AppData {
       const weddingAnn = parsed.anniversaries.find((a) => a.category === 'wedding' || a.id === 'ann-1');
       if (weddingAnn && weddingAnn.date === '2024-03-24') {
         weddingAnn.date = '2024-11-17';
+      }
+      // Ensure partner1 name is 국신 if default
+      if (parsed.profile && (parsed.profile.partner1.name === '남편' || !parsed.profile.partner1.name)) {
+        parsed.profile.partner1.name = '국신';
+      }
+      // Update 국신 생일
+      const kookshinAnn = parsed.anniversaries.find((a) => a.id === 'ann-3' || (a.category === 'birthday' && (a.title.includes('남편') || a.title.includes('국신'))));
+      if (kookshinAnn) {
+        kookshinAnn.title = '국신 생일 🎂';
+        kookshinAnn.date = '1990-01-04';
+        kookshinAnn.isRepeatYearly = true;
+        kookshinAnn.memo = '양력 1월 4일 소중한 국신의 생일! 매년 사랑하고 축하해 🎉';
+        kookshinAnn.icon = '🎂';
       }
       // Filter out initial dummy events
       if (parsed.events) {
