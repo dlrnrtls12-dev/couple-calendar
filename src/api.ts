@@ -1,0 +1,474 @@
+import { AppData, CalendarEvent, Anniversary, TodoItem, LoveNote, MemoryItem, CoupleProfile } from './types';
+
+const STORAGE_KEY = 'couple_calendar_app_data';
+
+const defaultData: AppData = {
+  profile: {
+    partner1: {
+      name: '남편',
+      nickname: '서방님',
+      avatar: '👨',
+      mood: '설렘 💕',
+      moodMessage: '오늘 퇴근길에 맛있는 디저트 사갈게!',
+    },
+    partner2: {
+      name: '아내',
+      nickname: '우리여보',
+      avatar: '👩',
+      mood: '행복함 🥰',
+      moodMessage: '얼른 보고 싶다, 조심히 와요!',
+    },
+    weddingDate: '2024-03-24',
+    firstMetDate: '2021-11-12',
+    coupleMessage: '평생 서로의 편이 되어 함께 걸어가자 💍',
+  },
+  events: [
+    {
+      id: 'evt-1',
+      title: '주말 제주도 여행 🌴',
+      date: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0],
+      startTime: '09:00',
+      endTime: '18:00',
+      category: 'couple',
+      location: '김포공항 -> 제주도',
+      note: '렌터카 예약 확인 & 감성 카페 리스트 챙기기',
+      author: 'husband',
+    },
+    {
+      id: 'evt-2',
+      title: '양가 부모님과 저녁 식사 🍱',
+      date: new Date(Date.now() + 86400000 * 12).toISOString().split('T')[0],
+      startTime: '18:30',
+      endTime: '21:00',
+      category: 'family',
+      location: '경복궁 한정식',
+      note: '부모님 좋아하시는 과일 바구니 미리 주문하기',
+      author: 'wife',
+    },
+    {
+      id: 'evt-3',
+      title: '남편 치과 검진 🦷',
+      date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+      startTime: '15:00',
+      endTime: '16:00',
+      category: 'husband',
+      location: '서울미소치과',
+      note: '정기 스케일링 예약',
+      author: 'husband',
+    },
+    {
+      id: 'evt-4',
+      title: '아내 필라테스 수업 🧘‍♀️',
+      date: new Date(Date.now() + 86400000 * 1).toISOString().split('T')[0],
+      startTime: '19:30',
+      endTime: '20:30',
+      category: 'wife',
+      location: '바른자세 스튜디오',
+      note: '퇴근 후 바로 가기',
+      author: 'wife',
+    }
+  ],
+  anniversaries: [
+    {
+      id: 'ann-1',
+      title: '결혼기념일 💍',
+      date: '2024-03-24',
+      isRepeatYearly: true,
+      category: 'wedding',
+      memo: '서로에게 가장 특별한 날, 매년 감사하고 사랑해',
+      icon: '💍'
+    },
+    {
+      id: 'ann-2',
+      title: '처음 만난 날 🌸',
+      date: '2021-11-12',
+      isRepeatYearly: true,
+      category: 'firstMet',
+      memo: '따뜻한 라떼 향기와 함께 시작된 우리 이야기',
+      icon: '🌸'
+    },
+    {
+      id: 'ann-3',
+      title: '남편 생일 🎂',
+      date: '1993-08-15',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '세상에서 제일 사랑하는 내 반쪽 태어난 날',
+      icon: '🎉'
+    },
+    {
+      id: 'ann-4',
+      title: '아내 생일 🎂',
+      date: '1995-12-05',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '꽃보다 예쁜 우리 아내 생일 축하해!',
+      icon: '🎁'
+    }
+  ],
+  todos: [
+    {
+      id: 'td-1',
+      text: '주말 캠핑장 장보기 (고기, 숯, 마시멜로우)',
+      assignedTo: 'all',
+      category: 'groceries',
+      isDone: false,
+    },
+    {
+      id: 'td-2',
+      text: '가을 침구류 세탁 및 교체하기',
+      assignedTo: 'husband',
+      category: 'chore',
+      isDone: true,
+    },
+    {
+      id: 'td-3',
+      text: '스위스 인터라켄 별 보러 가기 🌌',
+      assignedTo: 'all',
+      category: 'bucket',
+      isDone: false,
+    },
+    {
+      id: 'td-4',
+      text: '결혼앨범 정리 및 액자 주문하기',
+      assignedTo: 'wife',
+      category: 'chore',
+      isDone: false,
+    }
+  ],
+  loveNotes: [
+    {
+      id: 'note-1',
+      sender: 'husband',
+      message: '오늘 하루도 정말 고생 많았어 여보. 늘 내 곁에 있어줘서 고맙고 든든해 ❤️',
+      createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+      sticker: '💖'
+    },
+    {
+      id: 'note-2',
+      sender: 'wife',
+      message: '아침에 커피 내려줘서 고마워요! 오늘도 파이팅하고 저녁에 만나요 ☕✨',
+      createdAt: new Date(Date.now() - 3600000 * 10).toISOString(),
+      sticker: '☕'
+    }
+  ],
+  memories: [
+    {
+      id: 'mem-1',
+      title: '첫 신혼여행 파리 에펠탑 앞에서 🗼',
+      date: '2024-04-02',
+      content: '야경을 바라보며 나눴던 다짐들. 손을 꼭 잡고 평생 행복하게 해주겠다고 약속했던 순간.',
+      author: 'husband',
+      likes: 12
+    },
+    {
+      id: 'mem-2',
+      title: '우리의 첫 보금자리 입주 첫날 🏡',
+      date: '2024-03-20',
+      content: '거실 바닥에 돗자리 펴고 먹었던 첫 짜장면과 탕수육. 소박했지만 그 어떤 만찬보다 달콤했던 날.',
+      author: 'wife',
+      likes: 9
+    }
+  ]
+};
+
+function getLocalData(): AppData {
+  try {
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) return JSON.parse(cached);
+  } catch (e) {
+    console.error(e);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
+  return defaultData;
+}
+
+function saveLocalData(data: AppData) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export const api = {
+  async getData(): Promise<AppData> {
+    try {
+      const res = await fetch('/api/data');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          saveLocalData(json.data);
+          return json.data;
+        }
+      }
+    } catch {
+      // Offline or GitHub Pages static deployment fallback
+    }
+    return getLocalData();
+  },
+
+  async updateProfile(profile: Partial<CoupleProfile>): Promise<CoupleProfile> {
+    try {
+      const res = await fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.profile;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.profile = { ...current.profile, ...profile };
+    saveLocalData(current);
+    return current.profile;
+  },
+
+  async addEvent(event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent> {
+    const newEvent: CalendarEvent = { ...event, id: 'evt-' + Date.now() };
+    try {
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.event;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.events.push(newEvent);
+    saveLocalData(current);
+    return newEvent;
+  },
+
+  async updateEvent(id: string, event: Partial<CalendarEvent>): Promise<CalendarEvent> {
+    try {
+      const res = await fetch(`/api/events/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.event;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    const idx = current.events.findIndex((e) => e.id === id);
+    if (idx !== -1) {
+      current.events[idx] = { ...current.events[idx], ...event };
+      saveLocalData(current);
+      return current.events[idx];
+    }
+    return { id, ...event } as CalendarEvent;
+  },
+
+  async deleteEvent(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/events/${id}`, { method: 'DELETE' });
+      if (res.ok) return true;
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.events = current.events.filter((e) => e.id !== id);
+    saveLocalData(current);
+    return true;
+  },
+
+  async addAnniversary(ann: Omit<Anniversary, 'id'>): Promise<Anniversary> {
+    const newAnn: Anniversary = { ...ann, id: 'ann-' + Date.now() };
+    try {
+      const res = await fetch('/api/anniversaries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ann),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.anniversary;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.anniversaries.push(newAnn);
+    saveLocalData(current);
+    return newAnn;
+  },
+
+  async deleteAnniversary(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/anniversaries/${id}`, { method: 'DELETE' });
+      if (res.ok) return true;
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.anniversaries = current.anniversaries.filter((a) => a.id !== id);
+    saveLocalData(current);
+    return true;
+  },
+
+  async addTodo(todo: Omit<TodoItem, 'id' | 'isDone'>): Promise<TodoItem> {
+    const newTodo: TodoItem = { ...todo, id: 'td-' + Date.now(), isDone: false };
+    try {
+      const res = await fetch('/api/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(todo),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.todo;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.todos.push(newTodo);
+    saveLocalData(current);
+    return newTodo;
+  },
+
+  async toggleTodo(id: string, isDone: boolean): Promise<void> {
+    try {
+      await fetch(`/api/todos/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isDone }),
+      });
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    const target = current.todos.find((t) => t.id === id);
+    if (target) {
+      target.isDone = isDone;
+      saveLocalData(current);
+    }
+  },
+
+  async deleteTodo(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+      if (res.ok) return true;
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.todos = current.todos.filter((t) => t.id !== id);
+    saveLocalData(current);
+    return true;
+  },
+
+  async addNote(note: Omit<LoveNote, 'id' | 'createdAt'>): Promise<LoveNote> {
+    const newNote: LoveNote = { ...note, id: 'note-' + Date.now(), createdAt: new Date().toISOString() };
+    try {
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(note),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.note;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.loveNotes.unshift(newNote);
+    saveLocalData(current);
+    return newNote;
+  },
+
+  async deleteNote(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/notes/${id}`, { method: 'DELETE' });
+      if (res.ok) return true;
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.loveNotes = current.loveNotes.filter((n) => n.id !== id);
+    saveLocalData(current);
+    return true;
+  },
+
+  async addMemory(memory: Omit<MemoryItem, 'id' | 'likes'>): Promise<MemoryItem> {
+    const newMem: MemoryItem = { ...memory, id: 'mem-' + Date.now(), likes: 0 };
+    try {
+      const res = await fetch('/api/memories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(memory),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.memory;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.memories.unshift(newMem);
+    saveLocalData(current);
+    return newMem;
+  },
+
+  async likeMemory(id: string): Promise<MemoryItem | null> {
+    try {
+      const res = await fetch(`/api/memories/${id}/like`, { method: 'POST' });
+      if (res.ok) {
+        const json = await res.json();
+        return json.memory;
+      }
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    const target = current.memories.find((m) => m.id === id);
+    if (target) {
+      target.likes = (target.likes || 0) + 1;
+      saveLocalData(current);
+      return target;
+    }
+    return null;
+  },
+
+  async deleteMemory(id: string): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/memories/${id}`, { method: 'DELETE' });
+      if (res.ok) return true;
+    } catch {
+      // Local fallback
+    }
+    const current = getLocalData();
+    current.memories = current.memories.filter((m) => m.id !== id);
+    saveLocalData(current);
+    return true;
+  },
+
+  async getNetworkInfo(): Promise<{ ip: string; accessUrl: string }> {
+    try {
+      const res = await fetch('/api/network-info');
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback
+    }
+    return { ip: window.location.hostname, accessUrl: window.location.href };
+  }
+};
