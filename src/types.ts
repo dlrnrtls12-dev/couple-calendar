@@ -12,6 +12,8 @@ export interface CoupleProfile {
   weddingDate: string;
   firstMetDate: string;
   coupleMessage: string;
+  adminPin?: string;
+  allowUserNicknameChange?: boolean;
 }
 
 export type EventCategory = 'couple' | 'husband' | 'wife' | 'family' | 'anniversary';

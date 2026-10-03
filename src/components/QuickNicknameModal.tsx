@@ -7,6 +7,7 @@ interface QuickNicknameModalProps {
   onClose: () => void;
   profile: CoupleProfile;
   onSave: (updatedProfile: Partial<CoupleProfile>) => void;
+  onOpenAdmin?: () => void;
 }
 
 export const QuickNicknameModal: React.FC<QuickNicknameModalProps> = ({
@@ -14,6 +15,7 @@ export const QuickNicknameModal: React.FC<QuickNicknameModalProps> = ({
   onClose,
   profile,
   onSave,
+  onOpenAdmin,
 }) => {
   const [partner1Nickname, setPartner1Nickname] = useState(profile.partner1.nickname || '서방님');
   const [partner1Mood, setPartner1Mood] = useState(profile.partner1.mood || '설렘 💕');
@@ -74,9 +76,23 @@ export const QuickNicknameModal: React.FC<QuickNicknameModalProps> = ({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4 overflow-y-auto flex-1">
-          <p className="text-xs text-stone-500">
-            서로를 부르는 사랑스러운 호칭과 아바타를 원하는 대로 자유롭게 바꿔보세요.
-          </p>
+          <div className="bg-amber-50/80 border border-amber-200/90 rounded-xl p-2.5 flex items-center justify-between text-xs">
+            <span className="text-amber-900 font-semibold text-[11px]">
+              👑 사용자 본명(이름) 임의 변경은 <strong>관리자 모드</strong> 전용입니다.
+            </span>
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenAdmin();
+                }}
+                className="text-[10px] bg-amber-500 hover:bg-amber-600 text-white font-bold px-2 py-1 rounded-lg shadow-2xs transition-colors cursor-pointer whitespace-nowrap ml-2"
+              >
+                관리자 이동
+              </button>
+            )}
+          </div>
 
           {/* Husband Card */}
           <div className="bg-blue-50/70 p-4 rounded-2xl border border-blue-100/80 space-y-2.5">

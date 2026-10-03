@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { CoupleProfile } from '../types';
-import { X, Heart, User, Calendar, MessageCircle, Sparkles } from 'lucide-react';
+import { X, Heart, User, Calendar, MessageCircle, Sparkles, Lock, Crown } from 'lucide-react';
 
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   profile: CoupleProfile;
   onSave: (updated: Partial<CoupleProfile>) => void;
+  onOpenAdmin?: () => void;
 }
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({
@@ -14,6 +15,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   onClose,
   profile,
   onSave,
+  onOpenAdmin,
 }) => {
   const [partner1Nickname, setPartner1Nickname] = useState(profile.partner1.nickname || '');
   const [partner1Mood, setPartner1Mood] = useState(profile.partner1.mood || '');
@@ -76,6 +78,29 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
 
         {/* Scrollable Form */}
         <form onSubmit={handleSubmit} className="p-5 space-y-5 overflow-y-auto flex-1">
+          {/* Admin Banner */}
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl p-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Crown className="w-4 h-4 text-amber-600" />
+              <div className="text-xs">
+                <span className="font-bold text-amber-900">사용자 이름(실명) 변경은 관리자 전용입니다.</span>
+                <p className="text-[10px] text-amber-700">관리자 모드에서 언제든 이름을 자유롭게 수정할 수 있습니다.</p>
+              </div>
+            </div>
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenAdmin();
+                }}
+                className="text-xs bg-gradient-to-r from-amber-500 to-rose-500 text-white font-bold px-3 py-1.5 rounded-xl shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer whitespace-nowrap ml-2"
+              >
+                관리자 모드 👑
+              </button>
+            )}
+          </div>
+
           {/* Partner 1 (Husband) */}
           <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 space-y-3">
             <div className="flex items-center justify-between">
@@ -94,6 +119,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="bg-white/90 p-2.5 rounded-xl border border-blue-200/80 flex items-center justify-between text-xs">
+              <span className="text-stone-500 font-medium">사용자 이름:</span>
+              <span className="font-bold text-blue-900 flex items-center gap-1">
+                <span>{profile.partner1.name}</span>
+                <span title="관리자만 변경 가능"><Lock className="w-3 h-3 text-stone-400" /></span>
+              </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
@@ -138,6 +171,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="bg-white/90 p-2.5 rounded-xl border border-pink-200/80 flex items-center justify-between text-xs">
+              <span className="text-stone-500 font-medium">사용자 이름:</span>
+              <span className="font-bold text-pink-900 flex items-center gap-1">
+                <span>{profile.partner2.name}</span>
+                <span title="관리자만 변경 가능"><Lock className="w-3 h-3 text-stone-400" /></span>
+              </span>
             </div>
 
             <div className="grid grid-cols-2 gap-2">

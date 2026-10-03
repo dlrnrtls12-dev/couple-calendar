@@ -13,6 +13,7 @@ import { ProfileModal } from './components/ProfileModal';
 import { ShareModal } from './components/ShareModal';
 import { QuickNicknameModal } from './components/QuickNicknameModal';
 import { SyncApprovalModal } from './components/SyncApprovalModal';
+import { AdminModal } from './components/AdminModal';
 import { BottomNav } from './components/BottomNav';
 import { MobileFAB } from './components/MobileFAB';
 import { AmbientBackground } from './components/AmbientBackground';
@@ -34,6 +35,7 @@ export const App: React.FC = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isQuickNicknameModalOpen, setIsQuickNicknameModalOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
 
   // Synchronization approval state
   const [incomingSyncData, setIncomingSyncData] = useState<AppData | null>(null);
@@ -304,6 +306,7 @@ export const App: React.FC = () => {
         onOpenProfile={() => setIsProfileModalOpen(true)}
         onOpenShare={() => setIsShareModalOpen(true)}
         onOpenQuickNickname={() => setIsQuickNicknameModalOpen(true)}
+        onOpenAdmin={() => setIsAdminModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -394,6 +397,10 @@ export const App: React.FC = () => {
         onClose={() => setIsProfileModalOpen(false)}
         profile={data.profile}
         onSave={handleSaveProfile}
+        onOpenAdmin={() => {
+          setIsProfileModalOpen(false);
+          setIsAdminModalOpen(true);
+        }}
       />
 
       <ShareModal
@@ -407,6 +414,10 @@ export const App: React.FC = () => {
         onClose={() => setIsQuickNicknameModalOpen(false)}
         profile={data.profile}
         onSave={handleSaveProfile}
+        onOpenAdmin={() => {
+          setIsQuickNicknameModalOpen(false);
+          setIsAdminModalOpen(true);
+        }}
       />
 
       <SyncApprovalModal
@@ -414,6 +425,18 @@ export const App: React.FC = () => {
         incomingData={incomingSyncData}
         onApprove={handleApproveSync}
         onReject={handleRejectSync}
+      />
+
+      <AdminModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        profile={data.profile}
+        appData={data}
+        onSaveProfile={handleSaveProfile}
+        onImportAllData={async (imported) => {
+          await api.applyFullData(imported);
+          setData(imported);
+        }}
       />
     </div>
   );

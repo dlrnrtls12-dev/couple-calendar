@@ -1,7 +1,7 @@
 import React from 'react';
 import { CoupleProfile } from '../types';
 import { calculateDaysPassed } from '../utils/dateUtils';
-import { Calendar, Heart, MessageSquareHeart, CheckSquare, Camera, Settings, Smartphone, Sparkles } from 'lucide-react';
+import { Calendar, Heart, MessageSquareHeart, CheckSquare, Camera, Settings, Smartphone, Sparkles, Crown } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface HeaderProps {
@@ -11,6 +11,7 @@ interface HeaderProps {
   onOpenProfile: () => void;
   onOpenShare: () => void;
   onOpenQuickNickname: () => void;
+  onOpenAdmin: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenProfile,
   onOpenShare,
   onOpenQuickNickname,
+  onOpenAdmin,
 }) => {
   const weddingDays = profile.weddingDate ? calculateDaysPassed(profile.weddingDate) : 0;
   const metDays = profile.firstMetDate ? calculateDaysPassed(profile.firstMetDate) : 0;
@@ -123,7 +125,15 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Utility Buttons */}
-          <div className="flex items-center gap-2 justify-end w-full sm:w-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 justify-end w-full sm:w-auto">
+            <button
+              onClick={onOpenAdmin}
+              className="flex items-center gap-1 text-xs font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white px-3 py-2.5 rounded-2xl shadow-sm shadow-amber-500/25 transition-all active:scale-95 cursor-pointer"
+              title="관리자 모드 (사용자 이름 임의 변경 및 전체 설정)"
+            >
+              <Crown className="w-3.5 h-3.5 text-amber-200" />
+              <span>관리자</span>
+            </button>
             <button
               onClick={onOpenShare}
               className="flex-1 sm:flex-none justify-center flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:from-purple-600 hover:to-indigo-700 text-white px-3.5 py-2.5 rounded-2xl shadow-md shadow-purple-500/20 transition-all active:scale-95 cursor-pointer"

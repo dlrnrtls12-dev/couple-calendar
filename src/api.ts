@@ -21,6 +21,8 @@ const defaultData: AppData = {
     weddingDate: '2024-11-17',
     firstMetDate: '2016-01-29',
     coupleMessage: '평생 서로의 편이 되어 함께 걸어가자 💍',
+    adminPin: '7777',
+    allowUserNicknameChange: true,
   },
   events: [
     {
