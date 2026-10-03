@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CalendarEvent, Anniversary } from '../types';
 import { 
   format, 
@@ -24,8 +24,10 @@ import {
   Trash2, 
   Calendar as CalendarIcon, 
   Sparkles,
-  Filter
+  Filter,
+  RefreshCw
 } from 'lucide-react';
+import { getHoliday, syncHolidaysFromApi } from '../utils/holidayUtils';
 
 interface CalendarViewProps {
   events: CalendarEvent[];
@@ -45,6 +47,30 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  const [isSyncingHolidays, setIsSyncingHolidays] = useState(false);
+  const [, setHolidayVersion] = useState(0);
+
+  // Background fetch public & substitute holidays for current year from open API
+  useEffect(() => {
+    const year = currentMonth.getFullYear();
+    syncHolidaysFromApi(year).then((res) => {
+      if (res.success) {
+        setHolidayVersion((v) => v + 1);
+      }
+    });
+  }, [currentMonth]);
+
+  const handleManualSyncHolidays = async () => {
+    setIsSyncingHolidays(true);
+    const res = await syncHolidaysFromApi(currentMonth.getFullYear());
+    setIsSyncingHolidays(false);
+    setHolidayVersion((v) => v + 1);
+    if (res.success) {
+      alert(`공휴일 및 대체휴무 API 동기화 완료! (${res.count}개 업데이트 반영)`);
+    } else {
+      alert('공휴일 및 대체휴무 데이터가 최신 상태로 적용되어 있습니다.');
+    }
+  };
 
   // Month navigation
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
@@ -174,6 +200,16 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           </div>
 
           <button
+            onClick={handleManualSyncHolidays}
+            disabled={isSyncingHolidays}
+            className="flex items-center gap-1.5 text-xs font-bold text-rose-700 bg-rose-50/90 hover:bg-rose-100 border border-rose-200/90 px-3 py-2.5 rounded-2xl transition-all cursor-pointer shadow-2xs active:scale-95"
+            title="공휴일 및 대체공휴일(대체휴무) 온라인 API 최신 정보 동기화"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-rose-500 ${isSyncingHolidays ? 'animate-spin' : ''}`} />
+            <span>{isSyncingHolidays ? 'API 동기화 중...' : '대체휴무 API'}</span>
+          </button>
+
+          <button
             onClick={() => onAddEvent(selectedDateStr)}
             className="flex items-center gap-1.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-md shadow-rose-500/25 transition-all cursor-pointer active:scale-95"
           >
@@ -207,16 +243,19 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
               const isDayToday = isToday(day);
               const { events: dayEvts, anniversaries: dayAnns } = getDayItems(day);
               const dayOfWeek = day.getDay();
+              const holiday = getHoliday(dateStr);
 
               return (
                 <div
                   key={dateStr}
                   onClick={() => setSelectedDate(day)}
-                  className={`min-h-[56px] sm:min-h-[92px] p-1 sm:p-1.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative group ${
+                  className={`min-h-[58px] sm:min-h-[94px] p-1 sm:p-1.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative group ${
                     isSelected
                       ? 'border-rose-400 bg-rose-50/40 shadow-xs'
                       : isDayToday
                       ? 'border-rose-200 bg-orange-50/20'
+                      : holiday
+                      ? 'border-rose-100 bg-rose-50/25'
                       : isCurrentMonthDay
                       ? 'border-stone-100 hover:border-stone-300 hover:bg-stone-50/50'
                       : 'border-transparent text-stone-300 bg-stone-50/30'
@@ -229,9 +268,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                         isDayToday
                           ? 'bg-rose-500 text-white font-bold'
                           : isSelected
-                          ? 'bg-rose-100 text-rose-700'
-                          : dayOfWeek === 0
-                          ? 'text-rose-500'
+                          ? 'bg-rose-100 text-rose-700 font-bold'
+                          : holiday || dayOfWeek === 0
+                          ? 'text-rose-600 font-bold'
                           : dayOfWeek === 6
                           ? 'text-blue-500'
                           : isCurrentMonthDay
@@ -252,27 +291,55 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
                   {/* Badges / indicators */}
                   <div className="space-y-1 mt-0.5 overflow-hidden">
-                    {/* Mobile Dots Indicator (Visible on small screens) */}
-                    <div className="flex sm:hidden items-center justify-center gap-0.5 flex-wrap pt-0.5">
-                      {dayAnns.slice(0, 1).map((ann) => (
-                        <span key={ann.id} className="text-[10px] leading-none" title={ann.title}>
-                          {ann.icon || '💍'}
+                    {/* Mobile Indicators (Visible on small screens) */}
+                    <div className="flex sm:hidden flex-col items-center gap-0.5 pt-0.5">
+                      {holiday && (
+                        <span
+                          className={`text-[8.5px] px-1 py-0.2 rounded font-black leading-tight truncate max-w-[42px] ${
+                            holiday.isSubstitute
+                              ? 'bg-rose-500 text-white shadow-2xs'
+                              : 'bg-rose-100 text-rose-700'
+                          }`}
+                          title={holiday.name}
+                        >
+                          {holiday.isSubstitute ? '대체휴무' : holiday.name}
                         </span>
-                      ))}
-                      {dayEvts.slice(0, 3).map((ev) => {
-                        const badge = getCategoryBadge(ev.category);
-                        return (
-                          <span
-                            key={ev.id}
-                            className={`w-1.5 h-1.5 rounded-full ${badge.dot}`}
-                            title={ev.title}
-                          />
-                        );
-                      })}
+                      )}
+                      <div className="flex items-center justify-center gap-0.5 flex-wrap">
+                        {dayAnns.slice(0, 1).map((ann) => (
+                          <span key={ann.id} className="text-[10px] leading-none" title={ann.title}>
+                            {ann.icon || '💍'}
+                          </span>
+                        ))}
+                        {dayEvts.slice(0, 2).map((ev) => {
+                          const badge = getCategoryBadge(ev.category);
+                          return (
+                            <span
+                              key={ev.id}
+                              className={`w-1.5 h-1.5 rounded-full ${badge.dot}`}
+                              title={ev.title}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Desktop/Tablet Text Pills (Hidden on mobile) */}
                     <div className="hidden sm:block space-y-1">
+                      {holiday && (
+                        <div
+                          className={`text-[10px] leading-tight truncate px-1.5 py-0.5 rounded font-black border flex items-center gap-1 ${
+                            holiday.isSubstitute
+                              ? 'bg-rose-500 text-white border-rose-600 shadow-2xs'
+                              : 'bg-rose-100 text-rose-700 border-rose-200'
+                          }`}
+                          title={holiday.name}
+                        >
+                          <span>{holiday.isSubstitute ? '🚩' : '🇰🇷'}</span>
+                          <span className="truncate">{holiday.name}</span>
+                        </div>
+                      )}
+
                       {dayAnns.slice(0, 1).map((ann) => (
                         <div
                           key={ann.id}
@@ -296,9 +363,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                         );
                       })}
 
-                      {dayEvts.length + dayAnns.length > 2 && (
+                      {dayEvts.length + dayAnns.length + (holiday ? 1 : 0) > 3 && (
                         <div className="text-[9px] text-stone-400 text-right pr-0.5">
-                          +{dayEvts.length + dayAnns.length - 2}개 더보기
+                          +{dayEvts.length + dayAnns.length + (holiday ? 1 : 0) - 2}개 더보기
                         </div>
                       )}
                     </div>
@@ -332,6 +399,46 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
           {/* List of items */}
           <div className="flex-1 overflow-y-auto mt-4 space-y-3 pr-1">
+            {/* Holiday / Substitute Holiday Card */}
+            {(() => {
+              const selectedHoliday = getHoliday(selectedDateStr);
+              if (!selectedHoliday) return null;
+              return (
+                <div
+                  className={`p-3.5 rounded-2xl shadow-2xs border ${
+                    selectedHoliday.isSubstitute
+                      ? 'bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white border-rose-400 shadow-md shadow-rose-500/20'
+                      : 'bg-rose-50/90 text-rose-900 border-rose-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black flex items-center gap-1.5">
+                      <span>{selectedHoliday.isSubstitute ? '🚩' : '🇰🇷'}</span>
+                      <span>{selectedHoliday.name}</span>
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        selectedHoliday.isSubstitute
+                          ? 'bg-white/25 text-white'
+                          : 'bg-rose-200/80 text-rose-800'
+                      }`}
+                    >
+                      {selectedHoliday.isSubstitute ? '대체휴무 (빨간날)' : '법정 공휴일'}
+                    </span>
+                  </div>
+                  <p
+                    className={`text-[11px] mt-1 ${
+                      selectedHoliday.isSubstitute ? 'text-rose-100' : 'text-rose-700'
+                    }`}
+                  >
+                    {selectedHoliday.isSubstitute
+                      ? '달콤한 대체공휴일입니다! 둘만의 행복하고 여유로운 데이트를 즐기세요 💕'
+                      : '소중한 공휴일입니다. 즐거운 하루 보내세요 ✨'}
+                  </p>
+                </div>
+              );
+            })()}
+
             {/* Anniversaries on this day */}
             {selectedDayItems.anniversaries.map((ann) => (
               <div
@@ -412,10 +519,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   </div>
                 );
               })
-            ) : selectedDayItems.anniversaries.length === 0 ? (
-              <div className="text-center py-12 text-stone-400">
+            ) : selectedDayItems.anniversaries.length === 0 && !getHoliday(selectedDateStr) ? (
+              <div className="text-center py-10 text-stone-400">
                 <CalendarIcon className="w-8 h-8 mx-auto mb-2 opacity-30 text-rose-400" />
-                <p className="text-xs">등록된 일정이 없어요</p>
+                <p className="text-xs">등록된 부부 일정이 없어요</p>
                 <button
                   onClick={() => onAddEvent(selectedDateStr)}
                   className="mt-3 text-xs text-rose-500 hover:text-rose-600 font-semibold underline cursor-pointer"

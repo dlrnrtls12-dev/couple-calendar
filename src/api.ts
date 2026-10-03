@@ -24,52 +24,7 @@ const defaultData: AppData = {
     adminPin: '7777',
     allowUserNicknameChange: true,
   },
-  events: [
-    {
-      id: 'evt-1',
-      title: '주말 제주도 여행 🌴',
-      date: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0],
-      startTime: '09:00',
-      endTime: '18:00',
-      category: 'couple',
-      location: '김포공항 -> 제주도',
-      note: '렌터카 예약 확인 & 감성 카페 리스트 챙기기',
-      author: 'husband',
-    },
-    {
-      id: 'evt-2',
-      title: '양가 부모님과 저녁 식사 🍱',
-      date: new Date(Date.now() + 86400000 * 12).toISOString().split('T')[0],
-      startTime: '18:30',
-      endTime: '21:00',
-      category: 'family',
-      location: '경복궁 한정식',
-      note: '부모님 좋아하시는 과일 바구니 미리 주문하기',
-      author: 'wife',
-    },
-    {
-      id: 'evt-3',
-      title: '남편 치과 검진 🦷',
-      date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
-      startTime: '15:00',
-      endTime: '16:00',
-      category: 'husband',
-      location: '서울미소치과',
-      note: '정기 스케일링 예약',
-      author: 'husband',
-    },
-    {
-      id: 'evt-4',
-      title: '아내 필라테스 수업 🧘‍♀️',
-      date: new Date(Date.now() + 86400000 * 1).toISOString().split('T')[0],
-      startTime: '19:30',
-      endTime: '20:30',
-      category: 'wife',
-      location: '바른자세 스튜디오',
-      note: '퇴근 후 바로 가기',
-      author: 'wife',
-    }
-  ],
+  events: [],
   anniversaries: [
     {
       id: 'ann-1',
@@ -191,9 +146,9 @@ function getLocalData(): AppData {
       if (weddingAnn && weddingAnn.date === '2024-03-24') {
         weddingAnn.date = '2024-11-17';
       }
-      const metAnn = parsed.anniversaries.find((a) => a.category === 'firstMet' || a.id === 'ann-2');
-      if (metAnn && metAnn.date === '2021-11-12') {
-        metAnn.date = '2016-01-29';
+      // Filter out initial dummy events
+      if (parsed.events) {
+        parsed.events = parsed.events.filter((e) => !['evt-1', 'evt-2', 'evt-3', 'evt-4'].includes(e.id));
       }
       saveLocalData(parsed);
       return parsed;
