@@ -1,0 +1,16 @@
+{
+  "name": "우리사이 - 부부 일정 & 기념일",
+  "short_name": "우리사이",
+  "description": "부부 사이에 일정과 기념일을 공유하는 감성 공간",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f5",
+  "theme_color": "#faf7f5",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
