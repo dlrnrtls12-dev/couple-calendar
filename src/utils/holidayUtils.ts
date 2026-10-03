@@ -65,7 +65,6 @@ const BASE_HOLIDAYS: Record<string, HolidayItem> = {
   '2026-09-24': { date: '2026-09-24', name: '추석 연휴', isSubstitute: false, isPublicHoliday: true },
   '2026-09-25': { date: '2026-09-25', name: '추석', isSubstitute: false, isPublicHoliday: true },
   '2026-09-26': { date: '2026-09-26', name: '추석 연휴', isSubstitute: false, isPublicHoliday: true },
-  '2026-09-28': { date: '2026-09-28', name: '대체공휴일 (추석)', isSubstitute: true, isPublicHoliday: true },
   '2026-10-03': { date: '2026-10-03', name: '개천절', isSubstitute: false, isPublicHoliday: true },
   '2026-10-05': { date: '2026-10-05', name: '대체공휴일 (개천절)', isSubstitute: true, isPublicHoliday: true },
   '2026-10-09': { date: '2026-10-09', name: '한글날', isSubstitute: false, isPublicHoliday: true },
@@ -94,7 +93,7 @@ const BASE_HOLIDAYS: Record<string, HolidayItem> = {
   '2027-12-27': { date: '2027-12-27', name: '대체공휴일 (크리스마스)', isSubstitute: true, isPublicHoliday: true },
 };
 
-const STORAGE_KEY = 'korean_holidays_cache_v1';
+const STORAGE_KEY = 'korean_holidays_cache_v2';
 
 function getCachedHolidays(): Record<string, HolidayItem> {
   try {
