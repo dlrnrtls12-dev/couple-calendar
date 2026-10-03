@@ -2,6 +2,9 @@
 
 부부 사이에 일정, 기념일, D-Day, 러브노트, 장보기/할일을 함께 공유할 수 있는 감성적이고 세련된 웹 프로그램입니다.
 
+- **🌐 온라인 모바일 접속 주소:** [https://dlrnrtls12-dev.github.io/couple-calendar/](https://dlrnrtls12-dev.github.io/couple-calendar/)
+- **📦 GitHub 저장소:** [https://github.com/dlrnrtls12-dev/couple-calendar](https://github.com/dlrnrtls12-dev/couple-calendar)
+
 ---
 
 ## 🌟 주요 기능
