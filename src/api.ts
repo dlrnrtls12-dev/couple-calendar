@@ -18,8 +18,8 @@ const defaultData: AppData = {
       mood: '행복함 🥰',
       moodMessage: '얼른 보고 싶다, 조심히 와요!',
     },
-    weddingDate: '2024-03-24',
-    firstMetDate: '2021-11-12',
+    weddingDate: '2024-11-17',
+    firstMetDate: '2016-01-29',
     coupleMessage: '평생 서로의 편이 되어 함께 걸어가자 💍',
   },
   events: [
@@ -72,19 +72,19 @@ const defaultData: AppData = {
     {
       id: 'ann-1',
       title: '결혼기념일 💍',
-      date: '2024-03-24',
+      date: '2024-11-17',
       isRepeatYearly: true,
       category: 'wedding',
-      memo: '서로에게 가장 특별한 날, 매년 감사하고 사랑해',
+      memo: '서로에게 가장 특별한 날, 평생 서로를 아끼고 사랑해',
       icon: '💍'
     },
     {
       id: 'ann-2',
       title: '처음 만난 날 🌸',
-      date: '2021-11-12',
+      date: '2016-01-29',
       isRepeatYearly: true,
       category: 'firstMet',
-      memo: '따뜻한 라떼 향기와 함께 시작된 우리 이야기',
+      memo: '어느덧 3900일이 넘은 우리, 함께해 온 모든 날이 선물이야',
       icon: '🌸'
     },
     {
@@ -175,7 +175,27 @@ const defaultData: AppData = {
 function getLocalData(): AppData {
   try {
     const cached = localStorage.getItem(STORAGE_KEY);
-    if (cached) return JSON.parse(cached);
+    if (cached) {
+      const parsed: AppData = JSON.parse(cached);
+      // Migrate dates if previous defaults were stored
+      if (parsed.profile.weddingDate === '2024-03-24' || !parsed.profile.weddingDate) {
+        parsed.profile.weddingDate = '2024-11-17';
+      }
+      if (parsed.profile.firstMetDate === '2021-11-12' || !parsed.profile.firstMetDate) {
+        parsed.profile.firstMetDate = '2016-01-29';
+      }
+      // Update anniversary items matching old dates
+      const weddingAnn = parsed.anniversaries.find((a) => a.category === 'wedding' || a.id === 'ann-1');
+      if (weddingAnn && weddingAnn.date === '2024-03-24') {
+        weddingAnn.date = '2024-11-17';
+      }
+      const metAnn = parsed.anniversaries.find((a) => a.category === 'firstMet' || a.id === 'ann-2');
+      if (metAnn && metAnn.date === '2021-11-12') {
+        metAnn.date = '2016-01-29';
+      }
+      saveLocalData(parsed);
+      return parsed;
+    }
   } catch (e) {
     console.error(e);
   }

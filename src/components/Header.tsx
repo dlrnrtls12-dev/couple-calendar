@@ -62,15 +62,15 @@ export const Header: React.FC<HeaderProps> = ({
                   부부 공간
                 </span>
               </div>
-              <div className="flex items-center gap-2 mt-0.5 text-xs text-stone-500">
+              <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs">
                 {profile.weddingDate && (
-                  <span className="font-medium text-rose-500 bg-rose-50/70 px-1.5 py-0.5 rounded">
+                  <span className="font-semibold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100 text-[11px]">
                     결혼 D+{weddingDays}일 💍
                   </span>
                 )}
                 {profile.firstMetDate && (
-                  <span className="text-stone-400 hidden sm:inline">
-                    (만난 지 {metDays}일째)
+                  <span className="font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100 text-[11px]">
+                    만난 지 D+{metDays}일 🌸
                   </span>
                 )}
               </div>

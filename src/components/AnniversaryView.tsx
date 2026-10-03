@@ -85,17 +85,22 @@ export const AnniversaryView: React.FC<AnniversaryViewProps> = ({
               <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
               <span>우리의 소중한 시간들</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
-              결혼한 지 <span className="underline decoration-wavy decoration-yellow-300">D+{weddingDays}일</span>
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight flex flex-wrap items-center gap-2">
+              <span>결혼 <span className="underline decoration-wavy decoration-yellow-300">D+{weddingDays}일</span> 💍</span>
+              <span className="text-rose-200 text-lg sm:text-2xl font-light">|</span>
+              <span className="text-xl sm:text-3xl text-yellow-200">만난 지 D+{metDays}일 🌸</span>
             </h2>
-            <p className="text-sm text-rose-100 font-medium">
-              {profile.partner1.nickname || profile.partner1.name} ❤️ {profile.partner2.nickname || profile.partner2.name} 부부의 행복한 여정
+            <p className="text-xs sm:text-sm text-rose-100 font-medium pt-1">
+              {profile.partner1.nickname || profile.partner1.name} ❤️ {profile.partner2.nickname || profile.partner2.name} 부부의 {metDays}일간의 아름다운 사랑
             </p>
-            {profile.weddingDate && (
-              <div className="text-xs text-rose-200/80 pt-1">
-                결혼식: {formatKoreanDate(profile.weddingDate)}
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-3 text-xs text-rose-200/90 pt-1">
+              {profile.weddingDate && (
+                <span>결혼기념일: {formatKoreanDate(profile.weddingDate)}</span>
+              )}
+              {profile.firstMetDate && (
+                <span>처음 만난 날: {formatKoreanDate(profile.firstMetDate)}</span>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3">

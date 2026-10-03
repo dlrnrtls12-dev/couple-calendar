@@ -212,7 +212,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                 <div
                   key={dateStr}
                   onClick={() => setSelectedDate(day)}
-                  className={`min-h-[75px] sm:min-h-[92px] p-1.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative group ${
+                  className={`min-h-[56px] sm:min-h-[92px] p-1 sm:p-1.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative group ${
                     isSelected
                       ? 'border-rose-400 bg-rose-50/40 shadow-xs'
                       : isDayToday
@@ -251,37 +251,57 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   </div>
 
                   {/* Badges / indicators */}
-                  <div className="space-y-1 mt-1 overflow-hidden">
-                    {/* Anniversary Pill */}
-                    {dayAnns.slice(0, 1).map((ann) => (
-                      <div
-                        key={ann.id}
-                        className="text-[10px] leading-tight truncate px-1 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold border border-amber-200"
-                        title={ann.title}
-                      >
-                        {ann.icon || '💍'} {ann.title}
-                      </div>
-                    ))}
+                  <div className="space-y-1 mt-0.5 overflow-hidden">
+                    {/* Mobile Dots Indicator (Visible on small screens) */}
+                    <div className="flex sm:hidden items-center justify-center gap-0.5 flex-wrap pt-0.5">
+                      {dayAnns.slice(0, 1).map((ann) => (
+                        <span key={ann.id} className="text-[10px] leading-none" title={ann.title}>
+                          {ann.icon || '💍'}
+                        </span>
+                      ))}
+                      {dayEvts.slice(0, 3).map((ev) => {
+                        const badge = getCategoryBadge(ev.category);
+                        return (
+                          <span
+                            key={ev.id}
+                            className={`w-1.5 h-1.5 rounded-full ${badge.dot}`}
+                            title={ev.title}
+                          />
+                        );
+                      })}
+                    </div>
 
-                    {/* Events Pills */}
-                    {dayEvts.slice(0, 2).map((ev) => {
-                      const badge = getCategoryBadge(ev.category);
-                      return (
+                    {/* Desktop/Tablet Text Pills (Hidden on mobile) */}
+                    <div className="hidden sm:block space-y-1">
+                      {dayAnns.slice(0, 1).map((ann) => (
                         <div
-                          key={ev.id}
-                          className={`text-[10px] leading-tight truncate px-1 py-0.5 rounded font-medium border ${badge.bg}`}
-                          title={`${ev.title} (${ev.startTime || '종일'})`}
+                          key={ann.id}
+                          className="text-[10px] leading-tight truncate px-1 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold border border-amber-200"
+                          title={ann.title}
                         >
-                          {ev.title}
+                          {ann.icon || '💍'} {ann.title}
                         </div>
-                      );
-                    })}
+                      ))}
 
-                    {dayEvts.length + dayAnns.length > 2 && (
-                      <div className="text-[9px] text-stone-400 text-right pr-0.5">
-                        +{dayEvts.length + dayAnns.length - 2}개 더보기
-                      </div>
-                    )}
+                      {dayEvts.slice(0, 2).map((ev) => {
+                        const badge = getCategoryBadge(ev.category);
+                        return (
+                          <div
+                            key={ev.id}
+                            className={`text-[10px] leading-tight truncate px-1 py-0.5 rounded font-medium border ${badge.bg}`}
+                            title={`${ev.title} (${ev.startTime || '종일'})`}
+                          >
+                            {ev.title}
+                          </div>
+                        );
+                      })}
+
+                      {dayEvts.length + dayAnns.length > 2 && (
+                        <div className="text-[9px] text-stone-400 text-right pr-0.5">
+                          +{dayEvts.length + dayAnns.length - 2}개 더보기
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

@@ -12,6 +12,7 @@ import { AnniversaryModal } from './components/AnniversaryModal';
 import { ProfileModal } from './components/ProfileModal';
 import { ShareModal } from './components/ShareModal';
 import { BottomNav } from './components/BottomNav';
+import { MobileFAB } from './components/MobileFAB';
 import { Heart, Loader2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -67,21 +68,40 @@ export const App: React.FC = () => {
     setIsEventModalOpen(true);
   };
 
-  const handleSaveEvent = async (eventData: Omit<CalendarEvent, 'id'>) => {
+  const handleSaveEvent = async (
+    eventData: Omit<CalendarEvent, 'id'>,
+    anniversaryData?: { isRepeatYearly: boolean; icon: string; memo?: string }
+  ) => {
     if (!data) return;
+    let updatedEvents = [...data.events];
+    let updatedAnniversaries = [...data.anniversaries];
+
     if (editingEvent) {
       const updated = await api.updateEvent(editingEvent.id, eventData);
-      setData({
-        ...data,
-        events: data.events.map((e) => (e.id === editingEvent.id ? updated : e)),
-      });
+      updatedEvents = data.events.map((e) => (e.id === editingEvent.id ? updated : e));
     } else {
       const newEvt = await api.addEvent(eventData);
-      setData({
-        ...data,
-        events: [...data.events, newEvt],
-      });
+      updatedEvents = [...data.events, newEvt];
     }
+
+    // Also register as anniversary if selected!
+    if (anniversaryData) {
+      const newAnn = await api.addAnniversary({
+        title: eventData.title,
+        date: eventData.date,
+        isRepeatYearly: anniversaryData.isRepeatYearly,
+        category: 'custom',
+        memo: anniversaryData.memo,
+        icon: anniversaryData.icon,
+      });
+      updatedAnniversaries = [...updatedAnniversaries, newAnn];
+    }
+
+    setData({
+      ...data,
+      events: updatedEvents,
+      anniversaries: updatedAnniversaries,
+    });
   };
 
   const handleDeleteEvent = async (id: string) => {
@@ -288,6 +308,12 @@ export const App: React.FC = () => {
           <span className="text-rose-400">♥</span>
         </p>
       </footer>
+
+      {/* Mobile Floating Action Button */}
+      <MobileFAB
+        onAddEvent={() => handleOpenAddEvent()}
+        onAddAnniversary={() => setIsAnniversaryModalOpen(true)}
+      />
 
       {/* Mobile Bottom Navigation Bar */}
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />

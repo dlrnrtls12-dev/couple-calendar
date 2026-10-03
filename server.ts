@@ -29,8 +29,8 @@ const initialData = {
       mood: '행복함 🥰',
       moodMessage: '얼른 보고 싶다, 조심히 와요!',
     },
-    weddingDate: '2024-03-24',
-    firstMetDate: '2021-11-12',
+    weddingDate: '2024-11-17',
+    firstMetDate: '2016-01-29',
     coupleMessage: '평생 서로의 편이 되어 함께 걸어가자 💍',
   },
   events: [
@@ -83,7 +83,7 @@ const initialData = {
     {
       id: 'ann-1',
       title: '결혼기념일 💍',
-      date: '2024-03-24',
+      date: '2024-11-17',
       isRepeatYearly: true,
       category: 'wedding',
       memo: '서로에게 가장 특별한 날, 매년 감사하고 사랑해',
@@ -92,10 +92,10 @@ const initialData = {
     {
       id: 'ann-2',
       title: '처음 만난 날 🌸',
-      date: '2021-11-12',
+      date: '2016-01-29',
       isRepeatYearly: true,
       category: 'firstMet',
-      memo: '따뜻한 라떼 향기와 함께 시작된 우리 이야기',
+      memo: '어느덧 3900일이 넘은 우리, 함께해 온 모든 날이 선물이야',
       icon: '🌸'
     },
     {
