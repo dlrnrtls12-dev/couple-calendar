@@ -1,5 +1,7 @@
 import { differenceInDays, parseISO, format, addDays, addYears, isAfter, isBefore, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { Anniversary } from '../types';
+import { getAnniversarySolarDate } from './lunarUtils';
 
 export function calculateDaysPassed(dateString: string): number {
   if (!dateString) return 0;
@@ -36,6 +38,28 @@ export function calculateDDay(dateString: string, isYearly: boolean = false): { 
     } else {
       return { days: Math.abs(diff), formattedText: `D+${Math.abs(diff)}`, isPast: true };
     }
+  }
+}
+
+export function calculateAnniversaryDDay(ann: Anniversary): { days: number; formattedText: string; isPast: boolean; nextSolarDate: string } {
+  const today = startOfDay(new Date());
+  const thisYear = today.getFullYear();
+
+  let nextSolarDateStr = getAnniversarySolarDate(ann, thisYear);
+  let nextDate = startOfDay(parseISO(nextSolarDateStr));
+
+  if (ann.isRepeatYearly && isBefore(nextDate, today)) {
+    nextSolarDateStr = getAnniversarySolarDate(ann, thisYear + 1);
+    nextDate = startOfDay(parseISO(nextSolarDateStr));
+  }
+
+  const diff = differenceInDays(nextDate, today);
+  if (diff === 0) {
+    return { days: 0, formattedText: 'D-DAY 오늘! 🎉', isPast: false, nextSolarDate: nextSolarDateStr };
+  } else if (diff > 0) {
+    return { days: diff, formattedText: `D-${diff}`, isPast: false, nextSolarDate: nextSolarDateStr };
+  } else {
+    return { days: Math.abs(diff), formattedText: `D+${Math.abs(diff)}`, isPast: true, nextSolarDate: nextSolarDateStr };
   }
 }
 

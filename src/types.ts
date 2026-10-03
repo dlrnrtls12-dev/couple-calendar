@@ -38,6 +38,9 @@ export interface Anniversary {
   category: 'wedding' | 'firstMet' | 'birthday' | 'custom';
   memo?: string;
   icon?: string;
+  isLunar?: boolean;
+  lunarMonth?: number;
+  lunarDay?: number;
 }
 
 export interface TodoItem {

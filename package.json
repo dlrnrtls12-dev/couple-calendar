@@ -16,6 +16,7 @@
     "cors": "^2.8.6",
     "date-fns": "^4.4.0",
     "express": "^5.2.1",
+    "korean-lunar-calendar": "^0.4.0",
     "lucide-react": "^1.51.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

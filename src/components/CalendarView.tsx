@@ -28,6 +28,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { getHoliday, syncHolidaysFromApi } from '../utils/holidayUtils';
+import { isAnniversaryOnDate } from '../utils/lunarUtils';
 
 interface CalendarViewProps {
   events: CalendarEvent[];
@@ -100,13 +101,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     const dateStr = format(day, 'yyyy-MM-dd');
     const dayEvents = filteredEvents.filter((e) => e.date === dateStr);
     
-    // Anniversaries matching month & day (for yearly) or exact date
-    const dayAnns = anniversaries.filter((a) => {
-      if (a.isRepeatYearly) {
-        return a.date.slice(5) === dateStr.slice(5);
-      }
-      return a.date === dateStr;
-    });
+    // Anniversaries matching date (solar or lunar recurring)
+    const dayAnns = anniversaries.filter((a) => isAnniversaryOnDate(a, dateStr));
 
     return { events: dayEvents, anniversaries: dayAnns };
   };

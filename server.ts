@@ -23,7 +23,7 @@ const initialData = {
       moodMessage: '오늘 퇴근길에 맛있는 디저트 사갈게!',
     },
     partner2: {
-      name: '아내',
+      name: '민지',
       nickname: '우리여보',
       avatar: '👩',
       mood: '행복함 🥰',
@@ -38,39 +38,108 @@ const initialData = {
   events: [],
   anniversaries: [
     {
-      id: 'ann-1',
+      id: 'ann-wedding',
       title: '결혼기념일 💍',
       date: '2024-11-17',
       isRepeatYearly: true,
       category: 'wedding',
-      memo: '서로에게 가장 특별한 날, 매년 감사하고 사랑해',
+      memo: '서로에게 가장 특별한 날, 매년 감사하고 사랑해 💍',
       icon: '💍'
     },
     {
-      id: 'ann-2',
+      id: 'ann-first-met',
       title: '처음 만난 날 🌸',
       date: '2016-01-29',
       isRepeatYearly: true,
       category: 'firstMet',
-      memo: '어느덧 3900일이 넘은 우리, 함께해 온 모든 날이 선물이야',
+      memo: '어느덧 3900일이 넘은 우리, 함께해 온 모든 날이 선물이야 🌸',
       icon: '🌸'
     },
     {
-      id: 'ann-3',
+      id: 'ann-kookshin-birthday',
       title: '국신 생일 🎂',
       date: '1990-01-04',
       isRepeatYearly: true,
       category: 'birthday',
-      memo: '양력 1월 4일 소중한 국신의 생일! 매년 사랑하고 축하해 🎉',
+      memo: '양력 1월 4일 / 사랑하는 국신의 생일 🎉',
       icon: '🎂'
     },
     {
-      id: 'ann-4',
-      title: '아내 생일 🎂',
-      date: '1995-12-05',
+      id: 'ann-father-in-law-birthday',
+      title: '장인어른 생신 (아빠) 🎂',
+      date: '1960-01-07',
       isRepeatYearly: true,
       category: 'birthday',
-      memo: '꽃보다 예쁜 우리 아내 생일 축하해!',
+      memo: '양력 1월 7일 / 장인어른(아빠) 생신 축하드립니다! 늘 건강하세요 🥂',
+      icon: '🎉'
+    },
+    {
+      id: 'ann-minji-birthday',
+      title: '민지 생일 🎂',
+      date: '1995-01-21',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '양력 1월 21일 / 꽃보다 예쁜 우리 아내 민지 생일 축하해 💖',
+      icon: '🎁'
+    },
+    {
+      id: 'ann-father-memorial',
+      title: '아빠 제사 (시아버님) 🕯️',
+      date: '2026-05-30',
+      isRepeatYearly: true,
+      isLunar: true,
+      lunarMonth: 4,
+      lunarDay: 14,
+      category: 'custom',
+      memo: '음력 4월 14일 / 아빠 제사(시아버님). 늘 마음에 기억하고 추모합니다 🕯️',
+      icon: '🕯️'
+    },
+    {
+      id: 'ann-sunui-birthday',
+      title: '선의 생일 (큰형님) 🎂',
+      date: '1988-07-11',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '양력 7월 11일 / 큰형님 선의 생신 축하드립니다! ✨',
+      icon: '🎉'
+    },
+    {
+      id: 'ann-jiyu-birthday',
+      title: '지유 생일 🎂',
+      date: '2018-07-19',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '양력 7월 19일 / 사랑스러운 지유 생일 축하해 🌸',
+      icon: '🎂'
+    },
+    {
+      id: 'ann-juwon-birthday',
+      title: '주원 생일 🎂',
+      date: '2020-07-21',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '양력 7월 21일 / 귀염둥이 주원 생일 축하해 🎈',
+      icon: '🎉'
+    },
+    {
+      id: 'ann-mother-in-law-birthday',
+      title: '장모님 생신 (엄마) 🎂',
+      date: '2026-08-12',
+      isRepeatYearly: true,
+      isLunar: true,
+      lunarMonth: 6,
+      lunarDay: 30,
+      category: 'birthday',
+      memo: '음력 6월 30일 / 사랑하는 장모님(엄마) 생신 축하드립니다! 항상 건강하세요 💖',
+      icon: '🌸'
+    },
+    {
+      id: 'ann-sunmi-birthday',
+      title: '선미 생일 (작은형님) 🎂',
+      date: '1991-12-14',
+      isRepeatYearly: true,
+      category: 'birthday',
+      memo: '양력 12월 14일 / 작은형님 선미 생신 축하드립니다! 🎁',
       icon: '🎁'
     }
   ],

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Anniversary, CoupleProfile } from '../types';
-import { calculateDaysPassed, calculateDDay, getUpcomingMilestones } from '../utils/dateUtils';
+import { calculateDaysPassed, calculateAnniversaryDDay, getUpcomingMilestones } from '../utils/dateUtils';
 import { Plus, Sparkles, Trash2, Gift, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { LiveTimer } from './LiveTimer';
@@ -40,9 +40,9 @@ export const AnniversaryView: React.FC<AnniversaryViewProps> = ({
     fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2, colors: ['#ec4899', '#d946ef', '#f43f5e'] });
   };
 
-  // Calculate sorted upcoming anniversaries
+  // Calculate sorted upcoming anniversaries (supporting both Solar and Lunar)
   const sortedAnniversaries = [...anniversaries].map((item) => {
-    const ddayInfo = calculateDDay(item.date, item.isRepeatYearly);
+    const ddayInfo = calculateAnniversaryDDay(item);
     return { ...item, ddayInfo };
   }).sort((a, b) => a.ddayInfo.days - b.ddayInfo.days);
 
@@ -126,7 +126,14 @@ export const AnniversaryView: React.FC<AnniversaryViewProps> = ({
                     <div>
                       <h4 className="text-base font-bold text-stone-800">{ann.title}</h4>
                       <p className="text-xs text-stone-500 mt-0.5 font-medium">
-                        {ann.date} {ann.isRepeatYearly && '• 매년 반복'}
+                        {ann.isLunar ? (
+                          <span className="text-purple-700 font-semibold">
+                            음력 {ann.lunarMonth}월 {ann.lunarDay}일 (올해: {ann.ddayInfo.nextSolarDate.slice(5)})
+                          </span>
+                        ) : (
+                          <span>양력 {ann.date.slice(5)}</span>
+                        )}
+                        {ann.isRepeatYearly && ' • 매년 반복'}
                       </p>
                     </div>
                   </div>
