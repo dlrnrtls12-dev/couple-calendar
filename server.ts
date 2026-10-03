@@ -243,6 +243,15 @@ app.post('/api/profile', (req, res) => {
   res.json({ success: true, profile: data.profile });
 });
 
+app.post('/api/sync', (req, res) => {
+  const incoming = req.body;
+  if (!incoming || !incoming.profile) {
+    return res.status(400).json({ success: false, message: 'Invalid data' });
+  }
+  saveData(incoming);
+  res.json({ success: true, data: incoming });
+});
+
 // Events
 app.post('/api/events', (req, res) => {
   const data = loadData();

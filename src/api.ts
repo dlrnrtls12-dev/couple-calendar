@@ -248,6 +248,20 @@ export const api = {
     return current.profile;
   },
 
+  async applyFullData(newData: AppData): Promise<AppData> {
+    saveLocalData(newData);
+    try {
+      await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData),
+      });
+    } catch {
+      // Local fallback
+    }
+    return newData;
+  },
+
   async addEvent(event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent> {
     const newEvent: CalendarEvent = { ...event, id: 'evt-' + Date.now() };
     try {

@@ -11,9 +11,13 @@ import { EventModal } from './components/EventModal';
 import { AnniversaryModal } from './components/AnniversaryModal';
 import { ProfileModal } from './components/ProfileModal';
 import { ShareModal } from './components/ShareModal';
+import { QuickNicknameModal } from './components/QuickNicknameModal';
+import { SyncApprovalModal } from './components/SyncApprovalModal';
 import { BottomNav } from './components/BottomNav';
 import { MobileFAB } from './components/MobileFAB';
 import { AmbientBackground } from './components/AmbientBackground';
+import { decodeSyncData } from './utils/syncUtils';
+import confetti from 'canvas-confetti';
 import { Heart, Loader2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -29,6 +33,11 @@ export const App: React.FC = () => {
   const [isAnniversaryModalOpen, setIsAnniversaryModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isQuickNicknameModalOpen, setIsQuickNicknameModalOpen] = useState(false);
+
+  // Synchronization approval state
+  const [incomingSyncData, setIncomingSyncData] = useState<AppData | null>(null);
+  const [isSyncApprovalModalOpen, setIsSyncApprovalModalOpen] = useState(false);
 
   // Load initial data and set up live polling (every 4 seconds) for real-time couple sync
   useEffect(() => {
@@ -55,6 +64,48 @@ export const App: React.FC = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // Check for incoming sync data in URL (?sync=...)
+  useEffect(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const syncParam = urlParams.get('sync');
+      if (syncParam) {
+        const decoded = decodeSyncData(syncParam);
+        if (decoded && decoded.profile) {
+          setIncomingSyncData(decoded);
+          setIsSyncApprovalModalOpen(true);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to parse sync param', err);
+    }
+  }, []);
+
+  const handleApproveSync = async () => {
+    if (!incomingSyncData) return;
+    const updated = await api.applyFullData(incomingSyncData);
+    setData(updated);
+    setIsSyncApprovalModalOpen(false);
+    setIncomingSyncData(null);
+    // Remove query string from URL cleanly
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+    // Celebration confetti
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.3 },
+      colors: ['#ff6b8b', '#f43f5e', '#ec4899', '#a855f7']
+    });
+  };
+
+  const handleRejectSync = () => {
+    setIsSyncApprovalModalOpen(false);
+    setIncomingSyncData(null);
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+  };
 
   // Event Handlers
   const handleOpenAddEvent = (dateStr?: string) => {
@@ -252,6 +303,7 @@ export const App: React.FC = () => {
         setActiveTab={setActiveTab}
         onOpenProfile={() => setIsProfileModalOpen(true)}
         onOpenShare={() => setIsShareModalOpen(true)}
+        onOpenQuickNickname={() => setIsQuickNicknameModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -347,6 +399,21 @@ export const App: React.FC = () => {
       <ShareModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
+        currentData={data}
+      />
+
+      <QuickNicknameModal
+        isOpen={isQuickNicknameModalOpen}
+        onClose={() => setIsQuickNicknameModalOpen(false)}
+        profile={data.profile}
+        onSave={handleSaveProfile}
+      />
+
+      <SyncApprovalModal
+        isOpen={isSyncApprovalModalOpen}
+        incomingData={incomingSyncData}
+        onApprove={handleApproveSync}
+        onReject={handleRejectSync}
       />
     </div>
   );

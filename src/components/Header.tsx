@@ -10,6 +10,7 @@ interface HeaderProps {
   setActiveTab: (tab: string) => void;
   onOpenProfile: () => void;
   onOpenShare: () => void;
+  onOpenQuickNickname: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   onOpenProfile,
   onOpenShare,
+  onOpenQuickNickname,
 }) => {
   const weddingDays = profile.weddingDate ? calculateDaysPassed(profile.weddingDate) : 0;
   const metDays = profile.firstMetDate ? calculateDaysPassed(profile.firstMetDate) : 0;
@@ -78,14 +80,18 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Couple Nicknames & Mood Bar */}
-          <div className="flex items-center justify-center bg-white/80 backdrop-blur-md border border-rose-100/90 px-3 py-1.5 rounded-2xl gap-2 sm:gap-3 shadow-xs w-full sm:w-auto">
+          {/* Couple Nicknames & Mood Bar (Clickable to customize nicknames!) */}
+          <button
+            onClick={onOpenQuickNickname}
+            title="클릭하여 서방님, 우리여보 등 호칭을 변경하세요 ✨"
+            className="group flex items-center justify-center bg-white/90 hover:bg-white backdrop-blur-md border border-rose-200/90 hover:border-rose-400 px-3.5 py-1.5 rounded-2xl gap-2 sm:gap-3 shadow-xs hover:shadow-md transition-all cursor-pointer w-full sm:w-auto text-left relative"
+          >
             {/* Husband */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-lg sm:text-xl bg-blue-100/80 p-1 rounded-xl shadow-2xs">{profile.partner1.avatar || '👨'}</span>
+              <span className="text-lg sm:text-xl bg-blue-100/80 p-1 rounded-xl shadow-2xs group-hover:scale-110 transition-transform">{profile.partner1.avatar || '👨'}</span>
               <div className="text-left">
                 <div className="text-[11px] sm:text-xs font-bold text-stone-800 flex items-center gap-1">
-                  <span>{profile.partner1.nickname || profile.partner1.name}</span>
+                  <span className="group-hover:text-blue-600 transition-colors">{profile.partner1.nickname || profile.partner1.name}</span>
                   <span className="text-[9px] sm:text-[10px] bg-blue-500 text-white font-bold px-1.5 py-0.2 rounded-md">남편</span>
                 </div>
                 <div className="text-[10px] sm:text-[11px] text-stone-500 truncate max-w-[85px] sm:max-w-[120px]">
@@ -98,10 +104,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Wife */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-lg sm:text-xl bg-pink-100/80 p-1 rounded-xl shadow-2xs">{profile.partner2.avatar || '👩'}</span>
+              <span className="text-lg sm:text-xl bg-pink-100/80 p-1 rounded-xl shadow-2xs group-hover:scale-110 transition-transform">{profile.partner2.avatar || '👩'}</span>
               <div className="text-left">
                 <div className="text-[11px] sm:text-xs font-bold text-stone-800 flex items-center gap-1">
-                  <span>{profile.partner2.nickname || profile.partner2.name}</span>
+                  <span className="group-hover:text-pink-600 transition-colors">{profile.partner2.nickname || profile.partner2.name}</span>
                   <span className="text-[9px] sm:text-[10px] bg-pink-500 text-white font-bold px-1.5 py-0.2 rounded-md">아내</span>
                 </div>
                 <div className="text-[10px] sm:text-[11px] text-stone-500 truncate max-w-[85px] sm:max-w-[120px]">
@@ -109,7 +115,12 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+
+            {/* Little edit hint badge */}
+            <span className="hidden sm:inline-block ml-1 text-[10px] text-rose-500 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded-md font-semibold opacity-70 group-hover:opacity-100 transition-opacity">
+              호칭 변경 ✏️
+            </span>
+          </button>
 
           {/* Utility Buttons */}
           <div className="flex items-center gap-2 justify-end w-full sm:w-auto">
